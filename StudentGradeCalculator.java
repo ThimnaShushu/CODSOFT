@@ -26,6 +26,9 @@ public class StudentGradeCalculator {
             sum = sum + marksList[j];
         }
         System.out.println("Total Marks: "+ sum);
+
+        //Average Percentage
+        System.out.println("Average Percentage: "+ (sum/len)+"%");
         
 
         
