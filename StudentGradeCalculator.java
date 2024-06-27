@@ -28,9 +28,23 @@ public class StudentGradeCalculator {
         System.out.println("Total Marks: "+ sum);
 
         //Average Percentage
-        System.out.println("Average Percentage: "+ (sum/len)+"%");
+        Double avg = sum/len;
+        System.out.println("Average Percentage: "+ avg +"%");
         
-
+        //Grade Obtained
+        if(avg > 79 && avg < 101){
+            System.out.println("Grade Obtained: A");
+        }
+        else if(avg > 59 && avg < 80){
+            System.out.println("Grade Obtained: B");
+        
+        }
+        else if(avg > 49 && avg < 60){
+            System.out.println("Grade Obtained: C");
+        }
+        else if(avg<50){
+            System.out.println("Grade Obtained: F");
+        }
         
     }
 }
