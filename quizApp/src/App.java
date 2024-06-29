@@ -1,0 +1,280 @@
+import java.awt.event.*;
+import java.awt.*;
+import javax.swing.*;
+
+public class App implements ActionListener{
+	
+	String[] questions ={"What is the capital of France?", "Which planet is known as the Red Planet?", "What is the largest ocean on Earth?", "Who wrote the play 'Romeo and Juliet'?", "What is the chemical symbol for water?", "Which animal is known as the King of the Jungle?", "What is the smallest prime number?", "What is the largest planet in our solar system?", "Which country is known as the Land of the Rising Sun?", "Which element is represented by the symbol 'O' on the periodic table?" };
+	String[][] options ={{"Rome" ,"Berlin","Paris", "Madrid"}, {"Earth", "Mars", "Jupiter", "Venus"}, {"Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"},{"Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"},{"O2", "H2O", "CO2", "NaCl"}, {"Elephant", "Tiger", "Lion", "Bear"}, {"0", "1", "2", "3"}, {"Earth", "Mars", "Jupiter", "Saturn"},{"China", "South Korea", "Thailand", "Japan"}, {"Gold", "Oxygen", "Silver", "Hydrogen"}};
+	char[] answers = {'C', 'B', 'D', 'B', 'B', 'C', 'C', 'C', 'D', 'B'};
+	char guess;
+	char answer;
+	int index;
+	int correctInput =0;
+	int numQ = questions.length;
+	int scorePercent;
+	int seconds=10;
+	
+	JFrame frame = new JFrame();
+	JTextField textfield = new JTextField();
+	JTextArea textarea = new JTextArea();
+	JButton A = new JButton();
+	JButton B = new JButton();
+	JButton C = new JButton();
+	JButton D = new JButton();
+	JLabel labelA = new JLabel();
+	JLabel labelB = new JLabel();
+	JLabel labelC = new JLabel();
+	JLabel labelD = new JLabel();
+	JLabel time_label = new JLabel();
+	JLabel seconds_left = new JLabel();
+	JTextField number_right = new JTextField();
+	JTextField percentage = new JTextField();
+	
+	Timer timer = new Timer(1000, new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			seconds--;
+			seconds_left.setText(String.valueOf(seconds));
+			if(seconds<=0) {
+				showAnswer();
+			}
+			}
+		});
+	
+	public App() {
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(650,650);
+		frame.getContentPane().setBackground(new Color(196, 150, 239 ));
+		frame.setLayout(null);
+		frame.setResizable(false);
+		
+		textfield.setBounds(0,0,650,50);
+		textfield.setBackground(new Color(25,25,25));
+		textfield.setForeground(new Color(25,255,0));
+		textfield.setFont(new Font("Comic Sans",Font.BOLD,30));
+		textfield.setBorder(BorderFactory.createBevelBorder(1));
+		textfield.setHorizontalAlignment(JTextField.CENTER);
+		textfield.setEditable(false);
+		
+		textarea.setBounds(0,50,650,50);
+		textarea.setLineWrap(true);
+		textarea.setWrapStyleWord(true);
+		textarea.setBackground(new Color(25,25,25));
+		textarea.setForeground(new Color(25,255,0));
+		textarea.setFont(new Font("Comic Sans",Font.BOLD,25));
+		textarea.setBorder(BorderFactory.createBevelBorder(1));
+		textarea.setEditable(false);
+		
+		A.setBounds(0,100,100,100);
+		A.setFont(new Font("Comic Sans",Font.BOLD,35));
+		A.setFocusable(false);
+		A.addActionListener(this);
+		A.setText("A");
+		
+		B.setBounds(0,200,100,100);
+		B.setFont(new Font("Comic Sans",Font.BOLD,35));
+		B.setFocusable(false);
+		B.addActionListener(this);
+		B.setText("B");
+		
+		C.setBounds(0,300,100,100);
+		C.setFont(new Font("Comic Sans",Font.BOLD,35));
+		C.setFocusable(false);
+		C.addActionListener(this);
+		C.setText("C");
+		
+		D.setBounds(0,400,100,100);
+		D.setFont(new Font("Comic Sans",Font.BOLD,35));
+		D.setFocusable(false);
+		D.addActionListener(this);
+		D.setText("D");
+		
+		labelA.setBounds(125,100,500,100);
+		labelA.setBackground(new Color(50,50,50));
+		labelA.setForeground(new Color(25,255,0));
+		labelA.setFont(new Font("Comic Sans",Font.PLAIN,35));
+		
+		labelB.setBounds(125,200,500,100);
+		labelB.setBackground(new Color(50,50,50));
+		labelB.setForeground(new Color(25,255,0));
+		labelB.setFont(new Font("Comic Sans",Font.PLAIN,35));
+		
+		labelC.setBounds(125,300,500,100);
+		labelC.setBackground(new Color(50,50,50));
+		labelC.setForeground(new Color(25,255,0));
+		labelC.setFont(new Font("Comic Sans",Font.PLAIN,35));
+		
+		labelD.setBounds(125,400,500,100);
+		labelD.setBackground(new Color(50,50,50));
+		labelD.setForeground(new Color(25,255,0));
+		labelD.setFont(new Font("Comic Sans",Font.PLAIN,35));
+		
+		seconds_left.setBounds(535,510,100,100);
+		seconds_left.setBackground(new Color(25,25,25));
+		seconds_left.setForeground(new Color(255,0,0));
+		seconds_left.setFont(new Font("Comic Sans",Font.BOLD,60));
+		seconds_left.setBorder(BorderFactory.createBevelBorder(1));
+		seconds_left.setOpaque(true);
+		seconds_left.setHorizontalAlignment(JTextField.CENTER);
+		seconds_left.setText(String.valueOf(seconds));
+		
+		time_label.setBounds(535,475,100,25);
+		time_label.setBackground(new Color(50,50,50));
+		time_label.setForeground(new Color(255,0,0));
+		time_label.setFont(new Font("Comic Sans",Font.PLAIN,16));
+		time_label.setHorizontalAlignment(JTextField.CENTER);
+		
+		
+		number_right.setBounds(225,225,200,100);
+		number_right.setBackground(new Color(25,25,25));
+		number_right.setForeground(new Color(25,255,0));
+		number_right.setFont(new Font("Comic Sans",Font.BOLD,50));
+		number_right.setBorder(BorderFactory.createBevelBorder(1));
+		number_right.setHorizontalAlignment(JTextField.CENTER);
+		number_right.setEditable(false);
+		
+		percentage.setBounds(225,325,200,100);
+		percentage.setBackground(new Color(25,25,25));
+		percentage.setForeground(new Color(25,255,0));
+		percentage.setFont(new Font("Comic Sans",Font.BOLD,50));
+		percentage.setBorder(BorderFactory.createBevelBorder(1));
+		percentage.setHorizontalAlignment(JTextField.CENTER);
+		percentage.setEditable(false);
+		
+		frame.add(time_label);
+		frame.add(seconds_left);
+		frame.add(labelA);
+		frame.add(labelB);
+		frame.add(labelC);
+		frame.add(labelD);
+		frame.add(A);
+		frame.add(B);
+		frame.add(C);
+		frame.add(D);
+		frame.add(textarea);
+		frame.add(textfield);
+		frame.setVisible(true);
+		
+		nextQuestion();
+	}
+	public void nextQuestion() {
+		
+		if(index>=numQ) {
+			results();
+		}
+		else {
+			textfield.setText("Question "+(index+1));
+			textarea.setText(questions[index]);
+			labelA.setText(options[index][0]);
+			labelB.setText(options[index][1]);
+			labelC.setText(options[index][2]);
+			labelD.setText(options[index][3]);
+			timer.start();
+		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+			A.setEnabled(false);
+			B.setEnabled(false);
+			C.setEnabled(false);
+			D.setEnabled(false);
+			
+			if(e.getSource()==A) {
+				answer= 'A';
+				if(answer == answers[index]) {
+					correctInput++;
+				}
+			}
+			if(e.getSource()==B) {
+				answer= 'B';
+				if(answer == answers[index]) {
+					correctInput++;
+				}
+			}
+			if(e.getSource()==C) {
+				answer= 'C';
+				if(answer == answers[index]) {
+					correctInput++;
+				}
+			}
+			if(e.getSource()==D) {
+				answer= 'D';
+				if(answer == answers[index]) {
+					correctInput++;
+				}
+			}
+			showAnswer();
+	}
+	public void showAnswer() {
+		
+		timer.stop();
+		
+		A.setEnabled(false);
+		B.setEnabled(false);
+		C.setEnabled(false);
+		D.setEnabled(false);
+		
+		if(answers[index] != 'A')
+			labelA.setForeground(new Color(255,0,0));
+		if(answers[index] != 'B')
+			labelB.setForeground(new Color(255,0,0));
+		if(answers[index] != 'C')
+			labelC.setForeground(new Color(255,0,0));
+		if(answers[index] != 'D')
+			labelD.setForeground(new Color(255,0,0));
+		
+		Timer pause = new Timer(2000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				labelA.setForeground(new Color(25,255,0));
+				labelB.setForeground(new Color(25,255,0));
+				labelC.setForeground(new Color(25,255,0));
+				labelD.setForeground(new Color(25,255,0));
+				
+				answer = ' ';
+				seconds=10;
+				seconds_left.setText(String.valueOf(seconds));
+				A.setEnabled(true);
+				B.setEnabled(true);
+				C.setEnabled(true);
+				D.setEnabled(true);
+				index++;
+				nextQuestion();
+			}
+		});
+		pause.setRepeats(false);
+		pause.start();
+	}
+	public void results(){
+		
+		A.setEnabled(false);
+		B.setEnabled(false);
+		C.setEnabled(false);
+		D.setEnabled(false);
+		
+		scorePercent = (int)((correctInput/(double)numQ)*100);
+		
+		textfield.setText("ALL DONE");
+		textarea.setText("");
+		labelA.setText("");
+		labelB.setText("");
+		labelC.setText("");
+		labelD.setText("");
+		
+		number_right.setText(correctInput+ " out of "+ numQ);
+		percentage.setText(scorePercent+"%");
+		
+		frame.add(number_right);
+		frame.add(percentage);
+		
+	}
+}
+
+
+
+
